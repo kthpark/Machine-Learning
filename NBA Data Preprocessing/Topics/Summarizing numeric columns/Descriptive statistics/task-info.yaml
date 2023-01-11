@@ -1,0 +1,14 @@
+type: code
+files:
+- name: main.py
+  visible: true
+  text: |-
+    # your code here. The DataFrame is already loaded as iris_sample.
+    print(...)
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/13363#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Tue, 10 Jan 2023 08:57:49 UTC"
+record: -1

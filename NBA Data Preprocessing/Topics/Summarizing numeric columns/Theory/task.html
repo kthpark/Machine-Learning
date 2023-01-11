@@ -1,0 +1,61 @@
+<h2>Summarizing numeric columns</h2>
+<html><body><p><code class="language-python">pandas</code> is famous for its analytical tools. When we need to compare datasets or evaluate the data that is grouped by categories, we need to refer to summary statistics. Entry-by-entry data comparison is impractical. Moreover, an analyst should be able to describe myriads of small data discrepancies in more general terms. And central tendency measures can be useful for this purpose.</p>
+<h5 id="the-dataset">The dataset</h5>
+<p>At first, we need to import <code class="language-python">pandas</code>. In this topic, we are going to use the Palmer penguins dataset. You can import it with one line from GitHub (requires internet connection):</p>
+<pre><code class="language-python">import pandas as pd
+df = pd.read_csv('https://raw.githubusercontent.com/mwaskom/seaborn-data/master/penguins.csv')</code></pre>
+<p>Column names are self-explanatory:</p>
+<pre><code class="language-python">df.head(3)</code></pre>
+<p>Output:<br/>
+<img alt="" src="https://ucarecdn.com/ebcb00a8-45d8-47ae-95fc-41677a60f1fe/"/></p>
+<p style="text-align: center;"><img alt="" height="182" name="logo.png" src="https://ucarecdn.com/843f2384-760e-4502-b1ce-8573ea6e5b56/" width="158"/></p>
+<h5 id="central-tendency-measures">Central tendency measures</h5>
+<p>Comparing the datasets often means comparing the average. And by "average" they mean... <strong>the mean</strong>. The arithmetic mean, to be precise. Let's calculate the mean value for the flipper length:</p>
+<pre><code class="language-python">df.flipper_length_mm.mean()</code></pre>
+<p>Output:<br/>
+<img alt="" src="https://ucarecdn.com/fd6c46a3-e51b-4e14-bc83-76b25a268c7c/"/></p>
+<p>As you probably know, the mean is not a suitable measure for distributions that are far from normal (roughly speaking, a normal distribution is a symmetrical bell-shaped curve with the mean in the center). The median can be more useful for such cases. Let's find it for the same distribution:</p>
+<pre><code class="language-python">df.flipper_length_mm.median()</code></pre>
+<p>Output:<br/>
+<img alt="" src="https://ucarecdn.com/81f1dd3f-97ee-4c5c-ab77-f72f24b40086/"/></p>
+<p>The flipper length distribution is close to normal in our case (Gaussian). </p>
+<p>There can be situations when you need to find the row mean or median. Suppose we came up with the idea to measure penguins with only one value. It can be something like "penguin size", calculated as the mean of all available measurements of a penguin. We will do it by setting the <code class="language-python">axis</code> argument to columns. Take one experimental penguin (first row) for this experimental measure:</p>
+<pre><code class="language-python">df.head(1).mean(axis='columns')</code></pre>
+<p>Output:<br/>
+<img alt="" src="https://ucarecdn.com/39a955ae-ba51-492a-9988-d3094eb32203/"/></p>
+<p>As you can see, <code class="language-python">pandas</code> uses only numeric columns for that by default, so you don't need to choose them manually.</p>
+<p>As for the <strong>distribution mode</strong>, it makes more sense to find it for categorical features. Let's find the mode for the sex of penguins:</p>
+<pre><code class="language-python">df.sex.mode()</code></pre>
+<p>Output:<br/>
+<img alt="" src="https://ucarecdn.com/b8e2d2b6-4f74-4566-af16-55e34e899e43/"/></p>
+<p>Our dataset contains more males. Also, note that we have a Series as a result. If this was a multimodal distribution, we would get multiple modes (several rows).</p>
+<p>All the methods listed above can be also called from a <code class="language-python">pandas</code> DataFrame. In that case, they will return the summary statistics for every column in that DataFrame if it is possible. To count only the numeric columns, set the <code class="language-python">numeric_only</code> argument to "True".</p>
+<h5 id="dataframedescribe">DataFrame.describe</h5>
+<p>The next useful method for evaluating your data is <code class="language-python">DataFrame.describe()</code>. It generates descriptive statistics by all columns of a DataFrame. This method outputs the following values for numerical type columns:</p>
+<ul>
+<li><code class="language-python">count</code> — overall number of entires (non-unique);</li>
+<li><code class="language-python">mean</code> — arithmetic mean;</li>
+<li><code class="language-python">std</code> — standard deviation;</li>
+<li><code class="language-python">min</code>, <code class="language-python">max</code> — lowest and highest values from the column;</li>
+<li><code class="language-python">25%</code>, <code class="language-python">75%</code> — values of 1st and 3rd quartile;</li>
+<li><code class="language-python">50%</code> — median value.</li>
+</ul>
+<p>By default, <code class="language-python">describe()</code> will generate the statistics for numeric columns only.  </p>
+<p>You can pass <code class="language-python">'all'</code> to the <code class="language-python">include</code> argument in order to look at both numerical and categorical columns simultaneously:</p>
+<pre><code class="language-python">df.describe(include='all')</code></pre>
+<p>Output:<br/>
+<img alt="" src="https://ucarecdn.com/d6ee18bf-2100-45f8-953e-1e88adc2791c/"/></p>
+<p>For categorical columns, <code class="language-python">describe()</code> generates the following metrics: </p>
+<ul>
+<li><code class="language-python">count</code> — overall number of entires (non-unique);</li>
+<li><code class="language-python">unique</code> — unique quantity of entries;</li>
+<li><code class="language-python">top</code> — the most frequent value;</li>
+<li><code class="language-python">freq</code> — how many times the most frequent value appears in the column.</li>
+</ul>
+<p>If you use <code class="language-python">include='all'</code> you get NaNs for numeric statistics in object columns and vice versa. It doesn't mean that <code class="language-python">pandas</code> can't calculate them, it's just standard <code class="language-python">DataFrame.describe()</code> behavior. If you want to find them, use other methods. For example, for a number of unique entries in numeric columns, use <code class="language-python">DataFrame.nunique()</code>, and so on.</p>
+<h5 id="conclusion">Conclusion</h5>
+<p>In this topic, you learned how to summarize and evaluate your data in a more efficient way. Now you know how to:</p>
+<ul>
+<li>find the central tendency measures with <code class="language-python">.mean()</code>, <code class="language-python">.median()</code>, <code class="language-python">.mode()</code></li>
+<li>print the statistics both for numerical and object columns with <code class="language-python">describe()</code>.</li>
+</ul></body></html>
