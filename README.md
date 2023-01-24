@@ -7,3 +7,4 @@ Third Project: Linear Regression from Scratch <br />
 Fourth Project: Movie Quality Predictor <br />
 Fifth Project: Neural Network from Scratch <br />
 Sixth Project: Decision Tree from Scratch <br />
+Seventh Project: Logistic Regression from Scratch <br />
